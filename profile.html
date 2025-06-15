@@ -116,6 +116,24 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
+  /* Nút Đăng xuất */
+  <button id="logoutButton" style="
+  position: fixed;
+  top: 20px;
+  right: 120px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+">
+  🚪 Đăng xuất
+</button>
+
+
   /* Danh sách huy hiệu */
   #badge-list {
     display: grid;
@@ -208,6 +226,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDuTvBn8Xl01DYddVXQ7M0L24K3l-GyG0c",
@@ -255,6 +274,16 @@
         displayBadges(badges);
       }
     });
+      const logoutBtn = document.getElementById("logoutButton");
+      logoutBtn.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+          sessionStorage.clear();
+          window.location.href = "login.html";
+        } catch (error) {
+          alert("Lỗi khi đăng xuất: " + error.message);
+        }
+      });
   };
     
     async function getUserData(email) {

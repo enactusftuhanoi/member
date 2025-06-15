@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập | Enactus FTU Hanoi</title>
+    <title>Đăng nhập hệ thống | Enactus FTU Hanoi</title>
     <link rel="icon" href="/icon.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -106,7 +106,7 @@
             try {
                 const querySnapshot = await getDocs(q);
                 if (!querySnapshot.empty) {
-                    window.location.href = "member.html"; // Chuyển trong tab hiện tại
+                    window.location.href = "/profile.html"; // Chuyển trong tab hiện tại
                 } else {
                     document.getElementById('errorMessage').innerText = "Email không có quyền truy cập! Vui lòng liên hệ quản trị viên.";
                 }

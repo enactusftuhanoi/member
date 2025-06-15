@@ -291,7 +291,7 @@
     // Auth + phân quyền admin
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        window.location.href = "login.html?redirect=" + encodeURIComponent(window.location.pathname);
+        window.location.href = "/login.html?redirect=" + encodeURIComponent(window.location.pathname);
 
         return;
       }
@@ -299,7 +299,7 @@
       const userEmail = user.email;
       if (!userEmail) {
         alert("Tài khoản chưa có email, không thể xác thực quyền admin.");
-        window.location.href = "login.html?redirect=" + encodeURIComponent(window.location.pathname);
+        window.location.href = "/login.html?redirect=" + encodeURIComponent(window.location.pathname);
 
         return;
       }
@@ -310,7 +310,7 @@
 
         if (snapshot.empty) {
           alert("Không tìm thấy thông tin người dùng.");
-          window.location.href = "login.html?redirect=" + encodeURIComponent(window.location.pathname);
+          window.location.href = "/login.html?redirect=" + encodeURIComponent(window.location.pathname);
 
           return;
         }
@@ -320,13 +320,13 @@
           await loadBadges();
         } else {
           alert("Bạn không có quyền truy cập trang này.");
-          window.location.href = "login.html?redirect=" + encodeURIComponent(window.location.pathname);
+          window.location.href = "/login.html?redirect=" + encodeURIComponent(window.location.pathname);
 
         }
       } catch (error) {
         console.error("Lỗi khi kiểm tra quyền admin:", error);
         alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
-        window.location.href = "login.html?redirect=" + encodeURIComponent(window.location.pathname);
+        window.location.href = "/login.html?redirect=" + encodeURIComponent(window.location.pathname);
 
       }
     });

@@ -207,6 +207,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDuTvBn8Xl01DYddVXQ7M0L24K3l-GyG0c",
@@ -234,24 +235,28 @@
       }
     });
 
-    window.onload = async function () {
-      const userEmail = sessionStorage.getItem('userEmail');
-      const userRole = sessionStorage.getItem('userRole');
-
-      if (!userEmail) {
+    window.onload = function () {
+    const auth = getAuth();
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
         window.location.href = "login.html";
       } else {
-        if (typeof userRole === 'string' && userRole.toLowerCase() === "admin") {
+        const userEmail = user.email;
+        const userRole = sessionStorage.getItem('userRole'); // vẫn giữ tạm
+  
+        if (userRole && userRole.toLowerCase() === "admin") {
           document.getElementById("adminButton").style.display = "block";
         }
+  
+        sessionStorage.setItem('userEmail', userEmail); // lưu lại nếu cần
         await getUserData(userEmail);
-
-        // Lấy và hiển thị badges
+  
         const badges = await getUserBadges(userEmail);
         displayBadges(badges);
       }
-    };
-
+    });
+  };
+    
     async function getUserData(email) {
       const employeesRef = collection(db, "employees");
       const q = query(employeesRef, where("email", "==", email));

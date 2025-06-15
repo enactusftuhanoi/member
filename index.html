@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <title>Member | Enactus FTU Hanoi</title>
-  <link href="/icon.png"rel="icon" type="image/png"/>
+  <link href="/icon.png" rel="icon" type="image/png"/>
+  <link rel="canonical" href="https://enactusftuhanoi.github.io/vn" />
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="https://madewithgsap.com/assets/landing/style.css" />
@@ -29,9 +31,9 @@
         <div class="media"><img src="https://madewithgsap.com/effects/000/assets/medias/05.png" alt="Effect frame 05" /></div>
         <div class="media"><img src="https://madewithgsap.com/effects/000/assets/medias/06.png" alt="Effect frame 06" /></div>
         <div class="media">
-            <a href="/login.html">
-                <img src="https://madewithgsap.com/effects/000/assets/medias/07.png" alt="Login" />
-            </a>
+          <a href="/login.html">
+            <img src="https://madewithgsap.com/effects/000/assets/medias/07.png" alt="Effect frame 07" />
+          </a>
         </div>
         <div class="media"><img src="https://madewithgsap.com/effects/000/assets/medias/08.png" alt="Effect frame 08" /></div>
         <div class="media"><img src="https://madewithgsap.com/effects/000/assets/medias/09.png" alt="Effect frame 09" /></div>
@@ -47,71 +49,6 @@
       </div>
     </section>
   </main>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      getDocs,
-      updateDoc,
-      deleteDoc,
-      doc,
-      query,
-      where
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDuTvBn8Xl01DYddVXQ7M0L24K3l-GyG0c",
-      authDomain: "enactusftuhanoi-tracuu.firebaseapp.com",
-      projectId: "enactusftuhanoi-tracuu",
-      storageBucket: "enactusftuhanoi-tracuu.appspot.com",
-      messagingSenderId: "611356979403",
-      appId: "1:611356979403:web:2c9a4cffb2b323ce3deb4e"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = "/login.html";
-        return;
-      }
-
-      const userEmail = user.email;
-      if (!userEmail) {
-        alert("Tài khoản chưa có email, không thể xác thực quyền admin.");
-        window.location.href = "/login.html";
-        return;
-      }
-
-      try {
-        const q = query(collection(db, "employees"), where("email", "==", userEmail));
-        const snapshot = await getDocs(q);
-
-        if (snapshot.empty) {
-          alert("Không tìm thấy thông tin người dùng.");
-          window.location.href = "/login.html";
-          return;
-        }
-
-        const userData = snapshot.docs[0].data();
-        if (userData.role === "Admin") {
-          document.getElementById("adminPage").classList.remove("hidden");
-          await loadEmployees();
-        } else {
-          alert("Bạn không có quyền truy cập trang này.");
-          window.location.href = "/login.html";
-        }
-      } catch (error) {
-        console.error("Lỗi khi kiểm tra quyền admin:", error);
-        alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
-        window.location.href = "/login.html";
-      }
-    });
 
   <!-- Scripts -->
   <script src="https://madewithgsap.com/assets/landing/gsap.js"></script>
@@ -122,6 +59,5 @@
   <script src="https://madewithgsap.com/assets/landing/InertiaPlugin.min.js"></script>
   <script class="effect-file" src="https://madewithgsap.com/file-access?js=000"></script>
   <script src="https://madewithgsap.com/assets/landing/app2.js"></script>
-</script>
 </body>
 </html>

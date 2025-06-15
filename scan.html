@@ -107,6 +107,7 @@
       setTimeout(() => {
         window.location.href = "/login.html?redirect=" + encodeURIComponent(window.location.pathname);
       }, 3000);
+      sessionStorage.removeItem("userEmail");  // 🔥 Xóa email đã lưu
 
       return;
     }

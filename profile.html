@@ -117,7 +117,7 @@
   }
 
   /* Nút Đăng xuất */
-  <button id="logoutButton" style="
+  #logoutButton {
   position: fixed;
   top: 20px;
   right: 120px;
@@ -129,11 +129,8 @@
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-">
-  🚪 Đăng xuất
-</button>
-
-
+}
+  
   /* Danh sách huy hiệu */
   #badge-list {
     display: grid;
@@ -213,9 +210,9 @@
       <a href="/admin/badge.html" target="_blank">🎖️ Badge</a>
     </div>
   </div>
-<button id="scanButton" onclick="window.open('scan.html', '_blank')">
-  📸 Điểm danh
-</button>
+<button id="scanButton" onclick="window.open('scan.html', '_blank')">📸 Điểm danh</button>
+  <button id="logoutButton">🚪 Đăng xuất</button>
+
   <div id="profileContainer"></div>
 
   <div id="badge-list"></div>
@@ -225,7 +222,6 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {

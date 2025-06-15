@@ -172,19 +172,35 @@
     const modal = document.createElement("div");
     modal.className = "modal";
     modal.innerHTML = `<button class="close-btn">&times;</button><h3>Người điểm danh</h3>`;
-    const list = document.createElement("div");
-    list.innerHTML = snap.empty ? "Chưa có ai." : "";
-    let idx = 1;
-    snap.forEach(doc => {
-      const d = doc.data();
-      list.innerHTML += `<p>${idx++}. ${d.name || "-"} (${d.ban || ""}) - ${d.email || ""}</p>`;
-    });
-    modal.appendChild(list);
-    modal.querySelector(".close-btn").onclick = () => overlay.remove();
-    overlay.appendChild(modal);
-    document.body.appendChild(overlay);
-  };
+    const table = document.createElement('table');
+      table.innerHTML = `
+        <thead>
+          <tr><th>STT</th><th>Thời gian</th><th>Họ tên</th><th>Ban</th><th>Email</th></tr>
+        </thead><tbody></tbody>
+      `;
+      const tbody = table.querySelector('tbody');
 
+      let idx = 1;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const time = data.checkedInAt?.toDate().toLocaleString() || 'Không rõ';
+        tbody.innerHTML += `
+          <tr>
+            <td>${idx++}</td>
+            <td>${time}</td>
+            <td>${data.name || 'Ẩn danh'}</td>
+            <td>${data.ban || 'Không rõ'}</td>
+            <td>${data.email || doc.id}</td>
+          </tr>
+        `;
+      });
+
+      listDiv.innerHTML = '';
+      listDiv.appendChild(table);
+
+    } catch (error) {
+      listDiv.textContent = `Lỗi: ${error.message}`;
+    }
   window.renameSession = async (id, oldName) => {
     const newName = prompt("Nhập tên mới:", oldName);
     if (newName && newName !== oldName) {

@@ -95,8 +95,9 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-    import { getFirestore, collection, getDocs, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import {getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, getDoc, setDoc, query, where} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDuTvBn8Xl01DYddVXQ7M0L24K3l-GyG0c",
@@ -165,6 +166,7 @@ onAuthStateChanged(auth, async (user) => {
   const userEmail = user.email;
   if (!userEmail) {
     alert("Tài khoản không có email, không thể xác minh.");
+    await auth.signOut();
     window.location.href = "/login.html?redirect=" + encodeURIComponent(window.location.pathname);
 
     return;
@@ -182,6 +184,7 @@ onAuthStateChanged(auth, async (user) => {
 
     if (!found) {
       alert("Bạn không có quyền truy cập trang này.");
+      await auth.signOut();
       window.location.href = "/login.html?redirect=" + encodeURIComponent(window.location.pathname);
 
       return;
@@ -191,6 +194,7 @@ onAuthStateChanged(auth, async (user) => {
   } catch (error) {
     console.error("Lỗi xác thực:", error);
     alert("Đã xảy ra lỗi khi xác thực quyền truy cập.");
+    await auth.signOut();
     window.location.href = "/login.html?redirect=" + encodeURIComponent(window.location.pathname);
 
   }

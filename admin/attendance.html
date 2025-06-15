@@ -165,51 +165,26 @@
     QRCode.toCanvas(modal.querySelector("canvas"), id, { width: 220 });
   };
 
-    window.viewPeople = async function (sessionId) {
+  window.viewPeople = async function (sessionId) {
     const snap = await getDocs(collection(db, "attendanceSessions", sessionId, "attendees"));
     const overlay = document.createElement("div");
     overlay.className = "modal-overlay";
     const modal = document.createElement("div");
     modal.className = "modal";
     modal.innerHTML = `<button class="close-btn">&times;</button><h3>Người điểm danh</h3>`;
-    
-    const table = document.createElement("table");
-    table.innerHTML = `
-      <thead>
-        <tr><th>STT</th><th>Tên</th><th>Email</th><th>Thời gian</th></tr>
-      </thead>
-      <tbody>
-        ${
-          snap.empty
-            ? `<tr><td colspan="4">Chưa có người điểm danh.</td></tr>`
-            : [...snap.docs].map((docSnap, index) => {
-                const data = docSnap.data();
-                const time = data?.timestamp?.toDate().toLocaleString() || "-";
-                return `
-                  <tr>
-                    <td>${index + 1}</td>
-                    <td>${data.name || "-"}</td>
-                    <td>${data.email || "-"}</td>
-                    <td>${time}</td>
-                  </tr>
-                `;
-              }).join("")
-        }
-      </tbody>
-    `;
-    
-    modal.appendChild(table);
+    const list = document.createElement("div");
+    list.innerHTML = snap.empty ? "Chưa có ai." : "";
+    let idx = 1;
+    snap.forEach(doc => {
+      const d = doc.data();
+      list.innerHTML += `<p>${idx++}. ${d.name || "-"} (${d.ban || ""}) - ${d.email || ""}</p>`;
+    });
+    modal.appendChild(list);
     modal.querySelector(".close-btn").onclick = () => overlay.remove();
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
   };
 
-      listDiv.innerHTML = '';
-      listDiv.appendChild(table);
-
-    } catch (error) {
-      listDiv.textContent = `Lỗi: ${error.message}`;
-    }
   window.renameSession = async (id, oldName) => {
     const newName = prompt("Nhập tên mới:", oldName);
     if (newName && newName !== oldName) {

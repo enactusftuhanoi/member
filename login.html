@@ -119,8 +119,11 @@
     }
 
     // Nếu đã login thì chuyển luôn đến trang tương ứng (tránh hiển thị login lại)
+    let hasRedirected = false;
+
     onAuthStateChanged(auth, async (user) => {
-      if (user) {
+      if (user && !hasRedirected) {
+        hasRedirected = true; // tránh redirect nhiều lần
         const redirectPath = new URLSearchParams(window.location.search).get('redirect') || '/profile.html';
         await checkUserInFirestore(user.email, redirectPath);
       }

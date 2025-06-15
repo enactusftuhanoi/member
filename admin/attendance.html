@@ -165,35 +165,44 @@
     QRCode.toCanvas(modal.querySelector("canvas"), id, { width: 220 });
   };
 
-  window.viewPeople = async function (sessionId) {
+    window.viewPeople = async function (sessionId) {
     const snap = await getDocs(collection(db, "attendanceSessions", sessionId, "attendees"));
     const overlay = document.createElement("div");
     overlay.className = "modal-overlay";
     const modal = document.createElement("div");
     modal.className = "modal";
     modal.innerHTML = `<button class="close-btn">&times;</button><h3>Người điểm danh</h3>`;
-    const table = document.createElement('table');
-      table.innerHTML = `
-        <thead>
-          <tr><th>STT</th><th>Thời gian</th><th>Họ tên</th><th>Ban</th><th>Email</th></tr>
-        </thead><tbody></tbody>
-      `;
-      const tbody = table.querySelector('tbody');
-
-      let idx = 1;
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const time = data.checkedInAt?.toDate().toLocaleString() || 'Không rõ';
-        tbody.innerHTML += `
-          <tr>
-            <td>${idx++}</td>
-            <td>${time}</td>
-            <td>${data.name || 'Ẩn danh'}</td>
-            <td>${data.ban || 'Không rõ'}</td>
-            <td>${data.email || doc.id}</td>
-          </tr>
-        `;
-      });
+    
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <thead>
+        <tr><th>STT</th><th>Tên</th><th>Email</th><th>Thời gian</th></tr>
+      </thead>
+      <tbody>
+        ${
+          snap.empty
+            ? `<tr><td colspan="4">Chưa có người điểm danh.</td></tr>`
+            : [...snap.docs].map((docSnap, index) => {
+                const data = docSnap.data();
+                const time = data?.timestamp?.toDate().toLocaleString() || "-";
+                return `
+                  <tr>
+                    <td>${index + 1}</td>
+                    <td>${data.name || "-"}</td>
+                    <td>${data.email || "-"}</td>
+                    <td>${time}</td>
+                  </tr>
+                `;
+              }).join("")
+        }
+      </tbody>
+    `;
+    
+    modal.appendChild(table);
+    modal.querySelector(".close-btn").onclick = () => overlay.remove();
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+  };
 
       listDiv.innerHTML = '';
       listDiv.appendChild(table);
